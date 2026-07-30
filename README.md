@@ -1,19 +1,25 @@
 # Sample GPS APK
 
-A minimal Android app written in Kotlin. It requests location permission and shows the phone's current latitude, longitude, accuracy, provider, and an approximate address when available.
+یک برنامه ساده اندروید با Kotlin که با اجازه کاربر، موقعیت فعلی گوشی را نمایش می‌دهد.
 
-## Build automatically on GitHub
+## امکانات
 
-Every push to `main` runs GitHub Actions and creates a downloadable artifact named `sample-gps-debug-apk`.
+- درخواست دسترسی GPS
+- نمایش عرض جغرافیایی
+- نمایش طول جغرافیایی
+- نمایش دقت موقعیت
+- نمایش نام سرویس موقعیت
+- دکمه دریافت مجدد موقعیت
+- عدم ارسال اطلاعات به سرور
 
-1. Open the repository on GitHub.
-2. Open **Actions**.
-3. Select the latest successful **Build Android APK** run.
-4. Download `sample-gps-debug-apk` from the **Artifacts** section.
-5. Extract the ZIP and install `app-debug.apk` on the Android phone.
+## ساخت APK با GitHub Actions
 
-Android may ask you to allow installation from the browser or file manager used to open the APK.
+بعد از قرار دادن فایل‌ها در Repository و Push کردن روی شاخه `main`:
 
-## Privacy
+1. وارد Repository شو.
+2. از بالای صفحه وارد **Actions** شو.
+3. اجرای **Build Android APK** را باز کن.
+4. پس از سبز شدن Build، از بخش **Artifacts** فایل `sample-gps-debug-apk` را دانلود کن.
+5. فایل ZIP را باز کن و `app-debug.apk` را روی گوشی نصب کن.
 
-This test version only displays the location on the phone. It does not send location data to any server.
+ممکن است اندروید برای نصب APK از مرورگر یا File Manager اجازه جداگانه بخواهد.
