@@ -46,10 +46,7 @@ class MainActivity : Activity(), LocationListener {
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         setContentView(createContentView())
 
-        refreshButton.setOnClickListener {
-            startLocationRequest()
-        }
-
+        refreshButton.setOnClickListener { startLocationRequest() }
         settingsButton.setOnClickListener {
             startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
         }
@@ -76,7 +73,7 @@ class MainActivity : Activity(), LocationListener {
         }
 
         val subtitle = TextView(this).apply {
-            text = "برای دریافت موقعیت، GPS گوشی را روشن و اجازه دسترسی را تأیید کنید."
+            text = "GPS گوشی را روشن کنید و اجازه دسترسی به موقعیت را بدهید."
             textSize = 15f
             gravity = Gravity.CENTER
             setPadding(0, dp(10), 0, dp(22))
@@ -120,15 +117,8 @@ class MainActivity : Activity(), LocationListener {
         root.addView(providerText, fullWidth())
         root.addView(timeText, fullWidth())
 
-        val firstButtonParams = fullWidth().apply {
-            topMargin = dp(24)
-        }
-        root.addView(refreshButton, firstButtonParams)
-
-        val secondButtonParams = fullWidth().apply {
-            topMargin = dp(8)
-        }
-        root.addView(settingsButton, secondButtonParams)
+        root.addView(refreshButton, fullWidth().apply { topMargin = dp(24) })
+        root.addView(settingsButton, fullWidth().apply { topMargin = dp(8) })
 
         return ScrollView(this).apply {
             fillViewport = true
@@ -137,9 +127,7 @@ class MainActivity : Activity(), LocationListener {
     }
 
     private fun makeValueText(initialText: String): TextView {
-        val density = resources.displayMetrics.density
-        val verticalPadding = (8 * density).toInt()
-
+        val verticalPadding = (8 * resources.displayMetrics.density).toInt()
         return TextView(this).apply {
             text = initialText
             textSize = 18f
@@ -149,12 +137,10 @@ class MainActivity : Activity(), LocationListener {
         }
     }
 
-    private fun fullWidth(): LinearLayout.LayoutParams {
-        return LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-    }
+    private fun fullWidth() = LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.MATCH_PARENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT
+    )
 
     private fun startLocationRequest() {
         if (!hasLocationPermission()) {
@@ -195,35 +181,27 @@ class MainActivity : Activity(), LocationListener {
                 return
             }
 
-            val lastKnownLocation = locationManager.getLastKnownLocation(provider)
-            if (lastKnownLocation != null) {
-                showLocation(lastKnownLocation, isLastKnown = true)
+            locationManager.getLastKnownLocation(provider)?.let {
+                showLocation(it, isLastKnown = true)
             }
 
-            locationManager.requestLocationUpdates(
-                provider,
-                0L,
-                0f,
-                this
-            )
-        } catch (securityException: SecurityException) {
+            locationManager.requestLocationUpdates(provider, 0L, 0f, this)
+        } catch (_: SecurityException) {
             showError("اجازه دسترسی به موقعیت داده نشده است.")
         } catch (exception: Exception) {
             showError("خطا در دریافت موقعیت: ${exception.localizedMessage ?: "نامشخص"}")
         }
     }
 
-    private fun hasLocationPermission(): Boolean {
-        return checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) ==
+    private fun hasLocationPermission(): Boolean =
+        checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) ==
             PackageManager.PERMISSION_GRANTED ||
-            checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) ==
+        checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) ==
             PackageManager.PERMISSION_GRANTED
-    }
 
-    private fun isAnyLocationProviderEnabled(): Boolean {
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-            locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-    }
+    private fun isAnyLocationProviderEnabled(): Boolean =
+        locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+        locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
     override fun onLocationChanged(location: Location) {
         showLocation(location, isLastKnown = false)
@@ -246,13 +224,12 @@ class MainActivity : Activity(), LocationListener {
         progressBar.visibility = View.GONE
         refreshButton.isEnabled = true
 
-        val prefix = if (isLastKnown) {
+        statusText.text = if (isLastKnown) {
             "آخرین موقعیت ذخیره‌شده نمایش داده شد؛ در انتظار موقعیت تازه..."
         } else {
             "موقعیت با موفقیت دریافت شد."
         }
 
-        statusText.text = prefix
         latitudeText.text = "عرض جغرافیایی: %.6f".format(Locale.US, location.latitude)
         longitudeText.text = "طول جغرافیایی: %.6f".format(Locale.US, location.longitude)
         accuracyText.text = if (location.hasAccuracy()) {

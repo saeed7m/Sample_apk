@@ -1,25 +1,22 @@
-# Sample GPS APK
+# Sample GPS Android App
 
-یک برنامه ساده اندروید با Kotlin که با اجازه کاربر، موقعیت فعلی گوشی را نمایش می‌دهد.
+یک برنامه ساده اندرویدی برای نمایش موقعیت GPS فعلی.
 
-## امکانات
+## ساخت APK در GitHub Actions
 
-- درخواست دسترسی GPS
-- نمایش عرض جغرافیایی
-- نمایش طول جغرافیایی
-- نمایش دقت موقعیت
-- نمایش نام سرویس موقعیت
-- دکمه دریافت مجدد موقعیت
-- عدم ارسال اطلاعات به سرور
+1. همه محتویات این پروژه را در ریشه Repository قرار دهید.
+2. وارد تب Actions شوید.
+3. Workflow با نام `Build Android APK` را اجرا کنید.
+4. پس از سبز شدن Build، در پایین صفحه Run، فایل Artifact با نام
+   `sample-gps-debug-apk` را دانلود کنید.
+5. ZIP دانلودی را Extract کنید؛ فایل `app-debug.apk` داخل آن است.
 
-## ساخت APK با GitHub Actions
+## ساخت با Android Studio
 
-بعد از قرار دادن فایل‌ها در Repository و Push کردن روی شاخه `main`:
+پوشه پروژه را با Android Studio باز کنید و پس از Sync از مسیر زیر APK بسازید:
 
-1. وارد Repository شو.
-2. از بالای صفحه وارد **Actions** شو.
-3. اجرای **Build Android APK** را باز کن.
-4. پس از سبز شدن Build، از بخش **Artifacts** فایل `sample-gps-debug-apk` را دانلود کن.
-5. فایل ZIP را باز کن و `app-debug.apk` را روی گوشی نصب کن.
+Build > Build App Bundle(s) / APK(s) > Build APK(s)
 
-ممکن است اندروید برای نصب APK از مرورگر یا File Manager اجازه جداگانه بخواهد.
+فایل خروجی:
+
+app/build/outputs/apk/debug/app-debug.apk

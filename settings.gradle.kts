@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SampleGps"
+rootProject.name = "SampleGPS"
 include(":app")
